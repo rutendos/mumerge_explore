@@ -1,0 +1,101 @@
+
+#==============================================================================                                                                                                       
+__author__ = 'Rutendo F. Sigauke'
+__credits__ = ['Rutendo F. Sigauke', 'Jacob T. Stanley',
+                'Robin D. Dowell']
+__maintainer__ = 'Rutendo F. Sigauke'
+__email__ = 'Rutendo.Sigauke@colorado.edu' #or 'Rutendo.Sigauke@CUAnschutz.edu'                                                                                                       
+#==============================================================================                                                                                                       
+import os
+import sys
+import time
+import numpy as np
+
+
+def load_bed(path_to_bed):
+'''
+Load bedfile and return a list of
+coordinates [[chrm, start, stop, ...]]
+'''
+    bed_list = []
+    with open(path_to_bed) as bed:
+        for line in bed:
+            line = line.strip()
+            coord = line.split('\t')
+            bed_list.append(coord)
+            
+    return bed_list
+
+
+def load_fimo(fimo_file):
+'''
+load fimo tsv file and return a list
+of all results.
+'''
+    print('---------------------------------------------------------------------')
+    print("--------------------- STORING FIMO RESULTS FILE ---------------------")
+    fimo_results = []
+    with open(fimo_file) as motifs:
+        next(motifs)
+        for row in motifs:
+            row = row.strip()
+            if not row:  
+                continue
+            if row.startswith("#"):  
+                continue
+            results = row.split('\t')
+            fimo_results.append(results)
+            
+    print('-> Number of Fimo Calls = ' + str(len(fimo_results)))       
+    
+    return fimo_results
+
+
+def filter_fimo(fimo_res, alpha = 1e-04):
+
+'''
+    Parameters                        
+    ----------                        
+    fimo_res : str             
+        path to fimo tsv output                                                              
+                                    
+    alpha : float                   
+        significance cut-off (default 1e-04)
+                                                                                                                                
+    Returns   
+    -------
+    significant_results : list of lists
+        fimo hits with signicicant matches at states threshold
+             
+'''
+    
+    print("--------- FILTERING MOTIF HITS AT AN ALPHA LEVEL OF {} ----------".format(alpha))
+    significant_results = []
+    for res in fimo_res:
+        if float(res[8]) <= float(alpha):
+            significant_results.append(res)
+            
+    return significant_results
+
+
+def unique_sig_fimo(sig_results):
+'''
+function takes list of fimo results and returns
+a list of unique hits per region
+'''
+    
+    print("------------------------- UNIQUE FIMO HITS --------------------------")
+    unique_fimo_hits = {}
+    unique_fimo_hits_list = []
+
+    for sig in sig_results:
+        hit_id = sig[2]
+        chrom = str.split(str(sig[2]),':')[0]
+        start = int(str.split((str.split(str(sig[2]),':'))[1],'-')[0]) + 150
+        stop = int(str.split((str.split(str(sig[2]),':'))[1],'-')[1]) - 150
+        significance = sig[8]
+        if hit_id not in unique_fimo_hits:
+            unique_fimo_hits[hit_id] = [[chrom, start, stop, significance]]
+            unique_fimo_hits_list.append([chrom, start, stop, significance])
+            
+    return unique_fimo_hits_list
