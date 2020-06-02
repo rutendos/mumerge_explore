@@ -35,6 +35,16 @@ def get_center_coord(infile):
         
     return center_coord
 
+def get_center_coord_list(infile):
+    
+    center_coord = []
+    
+    for coord in infile:
+        center = coord[-1]
+        center_coord.append(center)
+        
+    return center_coord
+
 def overlapping_regions(bed_a, bed_b):
     beda_overlapping = []
     
@@ -47,8 +57,6 @@ def overlapping_regions(bed_a, bed_b):
                     
     return beda_overlapping
 
-
-
 def mean_diff(average,center):
     mean_diff_list = []
     for ave, cen in zip(average,center):
@@ -56,3 +64,59 @@ def mean_diff(average,center):
         mean_diff_list.append(cen_diff)
         
     return mean_diff_list
+
+
+def unique_sig_fimo_hits(sig_results):
+    
+    unique_fimo_hits = {}
+
+    for sig in sig_results:
+        hit_id = sig[2]
+        chrom = str.split(str(sig[2]),':')[0]
+        score = sig[6]
+        significance = sig[8]
+
+        ##start and stop of motif hit
+        motif_start = int(str.split((str.split(str(sig[2]),':'))[1],'-')[0]) + int(sig[3])
+        motif_stop = int(str.split((str.split(str(sig[2]),':'))[1],'-')[0]) + int(sig[4])
+
+        ##start and stop of region with peak call
+        region_start = int(str.split((str.split(str(sig[2]),':'))[1],'-')[0]) 
+        region_stop = int(str.split((str.split(str(sig[2]),':'))[1],'-')[1]) 
+
+        ##select most significant motif hit
+        if hit_id not in unique_fimo_hits:
+            unique_fimo_hits[hit_id] = [chrom, region_start, region_stop, 
+                                        significance, motif_start, motif_stop, score]
+        elif hit_id in unique_fimo_hits:
+            if float(unique_fimo_hits[hit_id][3]) > float(significance): 
+                unique_fimo_hits.update({hit_id : [chrom, region_start, region_stop, 
+                                                   significance, motif_start, motif_stop, score]})
+                
+    return unique_fimo_hits
+
+
+def summit_motif_dist(narrow, summits, unique_fimo_dict):
+    motif_peak_distances = []
+
+    for macs, summit in zip(narrow, summits):
+        for key, value in unique_fimo_dict.items():
+            if str(value[0]) == str(macs[0]) and str(value[1]) == str(macs[1]) and str(value[2]) == str(macs[2]):
+                distance = int(summit[1]) - int(value[4])
+                motif_peak_distances.append(distance)
+
+    print('Sequences with motif hits => ' + str(len(motif_peak_distances)))
+    return motif_peak_distances
+
+
+def merged_center_bed(merged_narrow):
+    
+    summit_coords = []
+    
+    for regions in merged_narrow:
+        chrm = regions[0]
+        start = int(regions[3])
+        stop = int(start + 1)
+        summit_coords.append([chrm, start, stop])
+        
+    return summit_coords

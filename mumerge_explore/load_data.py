@@ -14,11 +14,20 @@ import numpy as np
 
 
 def load_bed(path_to_bed):
-    '''
-    Load bedfile and return a list of
+    '''Loads a bedfile and returns a list of
     coordinates [[chrm, start, stop, ...]]
+                           
+    Parameters                   
+    ----------                
+    path_to_bed : str                 
+        path to the input bed file                                                                                              
+        
+    Returns            
+    -------  
+    bed_list : list
+        list of coordinates from a bed file
     '''
-    
+
     bed_list = []
     with open(path_to_bed) as bed:
         for line in bed:
@@ -30,9 +39,19 @@ def load_bed(path_to_bed):
 
 
 def load_fimo(fimo_file):
-    '''
-    load fimo tsv file and return a list
+    '''load fimo tsv file and return a list
     of all results.
+    
+    Parameters                   
+    ---------- 
+    fimo_file : str
+        paths to fimo .tsv file
+    
+    Returns            
+    ------- 
+    fimo_results : list
+        entries of Fimo TF motif hits
+    
     '''
     print('---------------------------------------------------------------------')
     print("--------------------- STORING FIMO RESULTS FILE ---------------------")
@@ -55,7 +74,8 @@ def load_fimo(fimo_file):
 
 def filter_fimo(fimo_res, alpha = 1e-04):
 
-    '''
+    '''Filter fimo hits based on significance
+    
     Parameters                        
     ----------                        
     fimo_res : str             
