@@ -101,9 +101,19 @@ def filter_fimo(fimo_res, alpha = 1e-04):
 
 
 def unique_sig_fimo(sig_results):
-    '''
-    function takes list of fimo results and returns
-    a list of unique hits per region
+    '''function takes list of fimo results and returns
+    a list of unique hits per region (input from filter fimo)
+    
+    Parameters
+    ----------
+    sig_results : list of lists
+        fimo hits in list
+    
+    Returns
+    -------
+    unique_fimo_hits_list : list of list
+        unique regions with at-least 1 fimo hits
+    
     '''
     
     print("------------------------- UNIQUE FIMO HITS --------------------------")
@@ -124,9 +134,19 @@ def unique_sig_fimo(sig_results):
 
 
 def fetch_merged_regions(merged_region):
-    '''
-    Takes merged bed files and returns the center of the called
-    width of region, center if regin as well as coordinates.
+    '''Takes merged bed files and returns the center of the called
+    width of region, center if region as well as coordinates.
+    
+    Parameters 
+    ----------
+    merged_region : str
+        path to merged bed file
+    
+    Returns
+    -------
+    width : list
+        widths for bed regions 
+        
     '''
     
     width = []
@@ -146,6 +166,22 @@ def fetch_merged_regions(merged_region):
     return width #, mu, region
 
 def sig_summit_peaks(summit_peak, unique_fimo_list):
+    '''Finds peak regions with motif hits
+    
+    Parameters
+    ----------
+    summit_peak : str
+        path to summit peak bed files
+        
+    unique_fimo_list : list of list
+        fimo TF motif hits list 
+        
+    Returns
+    -------
+    peaks_with_motifs : list of lists
+        peak regions with TF motifs
+         
+    '''
 
     print("-------------- SIGNIFICANT PEAKS WITH FIMO MOTIF HIT ----------------")
 
@@ -168,6 +204,28 @@ def sig_summit_peaks(summit_peak, unique_fimo_list):
     return peaks_with_motifs
 
 def final_narrow_peaks(narrow_peaks, peaks_with_motifs, outdir, outfile):
+    '''Returns the original _narrowPeaks with motif peaks, 
+    since motifs were scanned using a summit regions
+    
+    Parameters
+    ----------
+    narrow_peaks : str
+        path to macs _narrowPeaks peak calling files
+        
+    peaks_with_motifs : list of lists
+        peak regions with significant motif hits
+        
+    outdir : str
+        directory to store new bed files
+        
+    outfile : str
+        name of the bed file
+        
+    Returns
+    -------
+    writes a bed file in specified location
+    
+    '''
 
     print("---------- SAVE NARROW PEAKS WITH SIGNIFICANT MOTIF HITS ------------")
     
