@@ -98,15 +98,19 @@ def unique_sig_fimo_hits(sig_results):
 
 def summit_motif_dist(narrow, summits, unique_fimo_dict):
     motif_peak_distances = []
-
+    motif_significance = []
+    
     for macs, summit in zip(narrow, summits):
         for key, value in unique_fimo_dict.items():
             if str(value[0]) == str(macs[0]) and str(value[1]) == str(macs[1]) and str(value[2]) == str(macs[2]):
-                distance = int(summit[1]) - int(value[4])
+                motif_center = (int(value[5]-int(value[4]))+1)/2
+                #distance = int(summit[1]) - int(value[4])
+                distance = int(summit[1]) - (int(value[4]) + int(motif_center))
                 motif_peak_distances.append(distance)
+                motif_significance.append(float(value[3]))
 
     print('Sequences with motif hits => ' + str(len(motif_peak_distances)))
-    return motif_peak_distances
+    return motif_peak_distances, motif_significance
 
 
 def merged_center_bed(merged_narrow):
