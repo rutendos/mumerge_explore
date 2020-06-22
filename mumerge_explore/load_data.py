@@ -194,7 +194,7 @@ def sig_summit_peaks(summit_peak, unique_fimo_list):
             macs_peaks = row.split('\t')
             macs_results.append(macs_peaks)
 
-    for sig in unique_fimo_list:
+    for key, sig in unique_fimo_list.items():
         for macs in macs_results:
             if str(sig[0]) == str(macs[0]) and str(sig[1]) == str(macs[1]) and str(sig[2]) == str(macs[2]):
                 peaks_with_motifs.append([sig[0], sig[1], sig[2],macs[3]])
@@ -243,7 +243,7 @@ def final_narrow_peaks(narrow_peaks, peaks_with_motifs, outdir, outfile):
     
     np.savetxt(outdir + outfile,
                np.array(sig_fimo_narrow), delimiter="\t",fmt='%s')
-    print('------------------- DONE RUNNING {} -------------------'.format(outfile))
+    print('----------- DONE RUNNING {} -----------'.format(outfile))
     print('---------------------------------------------------------------------')
 
             

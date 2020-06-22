@@ -127,6 +127,7 @@ def unique_sig_fimo_hits(sig_results):
         chrom = str.split(str(sig[2]),':')[0]
         score = sig[6]
         significance = sig[8]
+        pval = sig[7]
 
         ##start and stop of motif hit
         motif_start = int(str.split((str.split(str(sig[2]),':'))[1],'-')[0]) + int(sig[3])
@@ -139,11 +140,11 @@ def unique_sig_fimo_hits(sig_results):
         ##select most significant motif hit
         if hit_id not in unique_fimo_hits:
             unique_fimo_hits[hit_id] = [chrom, region_start, region_stop, 
-                                        significance, motif_start, motif_stop, score]
+                                        significance, motif_start, motif_stop, score, pval]
         elif hit_id in unique_fimo_hits:
             if float(unique_fimo_hits[hit_id][3]) > float(significance): 
                 unique_fimo_hits.update({hit_id : [chrom, region_start, region_stop, 
-                                                   significance, motif_start, motif_stop, score]})
+                                                   significance, motif_start, motif_stop, score, pval]})
                 
     return unique_fimo_hits
 
@@ -172,6 +173,8 @@ def summit_motif_dist(narrow, summits, unique_fimo_dict):
     '''
     motif_peak_distances = []
     motif_significance = []
+    motif_pvalue = []
+    motif_score = []
     
     for macs, summit in zip(narrow, summits):
         for key, value in unique_fimo_dict.items():
@@ -181,9 +184,11 @@ def summit_motif_dist(narrow, summits, unique_fimo_dict):
                 distance = int(summit[1]) - (int(value[4]) + int(motif_center))
                 motif_peak_distances.append(distance)
                 motif_significance.append(float(value[3]))
-
+                motif_pvalue.append(float(value[7]))
+                motif_score.append(float(value[6]))
+                
     print('Sequences with motif hits => ' + str(len(motif_peak_distances)))
-    return motif_peak_distances, motif_significance
+    return motif_peak_distances, motif_significance, motif_score, motif_pvalue
 
 
 def merged_center_bed(merged_narrow):
