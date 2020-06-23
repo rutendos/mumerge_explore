@@ -1,0 +1,7 @@
+#file	sampid	group
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/HCT116_DMSO_TP53_sigFimo.bed	untreated1	dmso
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/MCF7_DMSO_TP53_sigFimo.bed	untreated2	dmso
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/SJSA_DMSO_TP53_sigFimo.bed	untreated3	dmso
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/HCT116_Nutlin_TP53_sigFimo.bed	treated1	nutlin
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/MCF7_Nutlin_TP53_sigFimo.bed	treated2	nutlin
+/scratch/Users/rusi2317/projects/mumerge_test_p53/processed_data/significant_regions_whole_seq/SJSA_Nutlin_TP53_sigFimo.bed	treated3	nutlin

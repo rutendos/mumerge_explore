@@ -1,0 +1,3 @@
+#file	sampid	group
+/scratch/Users/rusi2317/projects/mumerge_test_rest/processed_data/significant_regions_whole_seq/ENCFF001UNH.bed_sigFimo.bed	untreated1	dmso
+/scratch/Users/rusi2317/projects/mumerge_test_rest/processed_data/significant_regions_whole_seq/ENCFF001UNI.bed_sigFimo.bed	untreated2	dmso
